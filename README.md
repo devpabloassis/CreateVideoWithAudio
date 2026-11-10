@@ -1,16 +1,36 @@
-# Vídeo de Curiosidades sobre Gatos com Python
+# Create a Video with Audio in Python
 
-Gera um vídeo MP4 com 4 curiosidades sobre gatos da API [catfact.ninja](https://catfact.ninja/fact).
-Cada chamada à API vira uma cena: uma imagem de fundo escolhida ao acaso entre as 3 de `imgs/`, o texto
-da mensagem escrito sobre ela e a narração em áudio. Cada cena dura o tempo do seu áudio.
+A small, **educational** Python project that shows how to build an MP4 video from scratch by
+combining **images**, **text overlays** and **narrated audio**.
 
-Exemplo de resposta da API:
+The code is short on purpose, so it can be read from top to bottom in a few minutes. It is meant for
+people learning Python who want to see, in one place, how to:
+
+- call a REST API and read its JSON response (`requests`);
+- turn text into speech and save it as MP3 (`gTTS`);
+- open, resize and crop images, and draw text on them with a semi-transparent panel (`Pillow`);
+- generate images from code, with gradients and blur effects (`Pillow`);
+- join images and audio into video scenes and export an MP4 (`moviepy` + `ffmpeg`);
+- organize a script with functions, constants and command-line arguments (`argparse`).
+
+## What it does
+
+The script creates a video with 4 cat facts from the [catfact.ninja](https://catfact.ninja/fact) API.
+Each API call becomes one scene:
+
+1. the fact is fetched from the API;
+2. the text is converted into narrated audio (English voice);
+3. a background image is picked at random from `imgs/`, and the text is drawn over it;
+4. the scene lasts as long as its audio;
+5. all the scenes are joined into `output/video_gatos_<date>.mp4`.
+
+Example API response:
 
 ```json
 {"fact": "A group of cats is called a “clowder.”", "length": 38}
 ```
 
-## Instalação (venv)
+## Installation (venv)
 
 ```bash
 python3 -m venv venv
@@ -18,27 +38,36 @@ source venv/bin/activate          # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Precisa de internet: a API fornece as mensagens e o gTTS gera a voz.
+An internet connection is needed: the API provides the facts and gTTS generates the voice.
 
-## Uso
+## Usage
 
 ```bash
-python gerar_imagens.py           # cria imgs/fundo1.jpg, fundo2.jpg e fundo3.jpg (só na 1ª vez)
-python criar_video_gatos.py       # gera output/video_gatos_<data>.mp4
+python gerar_imagens.py           # creates imgs/fundo1.jpg, fundo2.jpg and fundo3.jpg (first time only)
+python criar_video_gatos.py       # creates output/video_gatos_<date>.mp4
 ```
 
-Opções:
+Options:
 
-- `--quantidade N`: quantidade de mensagens/chamadas à API (padrão: 4)
-- `--saida caminho.mp4`: arquivo de saída
+- `--quantidade N`: number of facts, which is also the number of API calls (default: 4)
+- `--saida path.mp4`: output file
 
-Para usar suas próprias imagens (por exemplo, fotos de gatos), coloque arquivos `.jpg`/`.png` em `imgs/`.
-Elas são ajustadas para 1280x720.
+To use your own images (for example, cat photos), put `.jpg` or `.png` files in `imgs/`.
+They are resized and cropped to 1280x720.
 
-## Arquivos
+## Files
 
-| Arquivo | Função |
+| File | Purpose |
 |---|---|
-| `criar_video_gatos.py` | Busca as mensagens, gera os áudios, monta as cenas e exporta o MP4 |
-| `gerar_imagens.py` | Cria 3 imagens de fundo de exemplo |
-| `output/temp/` | Áudios (`audio_N.mp3`) e quadros (`cena_N.jpg`) intermediários |
+| `criar_video_gatos.py` | Fetches the facts, generates the audio, builds the scenes and exports the MP4 |
+| `gerar_imagens.py` | Creates 3 sample background images |
+| `output/temp/` | Intermediate audio files (`audio_N.mp3`) and frames (`cena_N.jpg`) |
+
+## Ideas to practice
+
+- Change the voice language (`IDIOMA_VOZ`) or the video size (`LARGURA`, `ALTURA`).
+- Use another API, for example jokes or quotes.
+- Add background music, or a transition between scenes.
+- Show the scene number or a title on each image.
+
+The code comments and names are in Portuguese, the author's native language.
